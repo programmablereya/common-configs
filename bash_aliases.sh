@@ -72,6 +72,10 @@ function sync_git_only()
 
 alias ssh-keygen="ssh-keygen -o -a 100 -t ed25519"
 
+function ssh-authorize-key() {
+  cat "$1" >>~/.ssh/authorized_keys
+}
+
 function bashreload()
 {
   reload_scripts_only
