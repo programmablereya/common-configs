@@ -11,7 +11,7 @@ if [ -S "$(readlink $sock_proxy)" ]; then
   SSH_AUTH_SOCK=$sock_proxy
 else
   (
-    set +x
+    set -x
     eval `ssh-agent -s`
     ln -f --symbolic "$SSH_AUTH_SOCK" "$sock_proxy"
   )
