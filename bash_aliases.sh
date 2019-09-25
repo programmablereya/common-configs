@@ -1,4 +1,6 @@
+#!/bin/bash
 # vim: set filetype=sh:
+# link destination: $HOME/.bash_aliases
 
 # Install EDITOR
 export EDITOR='vim -X'
@@ -73,4 +75,4 @@ function help ()
 
 PS1='\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\[\e[0;36m\]\u\[\e[0;33m\]@\[\e[34m\]\h\[\e[0m\]:\[\e[1;32m\]\w\[\e[0m\]\n\$ '
 
-source "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"/.bash_tmux
+source "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"/bash_tmux.sh
