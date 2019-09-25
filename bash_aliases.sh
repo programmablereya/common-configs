@@ -86,6 +86,9 @@ function sync_git_only()
 alias ssh-keygen="ssh-keygen -o -a 100 -t ed25519"
 
 function ssh-authorize-key() {
+  if [[ ! -r "$1" ]] || ! file -b "$1" | grep -q "^OpenSSH .* public key$"; then
+    echo "Expected a public key file"
+  fi
   cat "$1" >>~/.ssh/authorized_keys
 }
 
