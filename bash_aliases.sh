@@ -54,9 +54,8 @@ function copy_func()
     eval "$(echo "${2}()"; declare -f ${1} | tail -n +2)"
 }
 
-function bashreload()
+function sync_git_only()
 {
-  reload_scripts_only
   (
     cd "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
     needs_push=false
@@ -69,6 +68,15 @@ function bashreload()
       git push
     fi
   )
+}
+
+alias ssh-keygen=ssh-keygen -o -a 100 -t ed25519
+
+function bashreload()
+{
+  reload_scripts_only
+  sync_git_only
+  reload_scripts_only
 }
 
 function man ()
