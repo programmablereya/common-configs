@@ -21,7 +21,7 @@ function get_bgcolor_gradient_red_to_cyan() {
   elif [[ $index -lt 0 ]]; then
     index=0
   fi
-  echo ${COLORS[$GRADIENTINDEX]}
+  echo ${colors[$index]}
 }
 
 function needs_reboot() {
