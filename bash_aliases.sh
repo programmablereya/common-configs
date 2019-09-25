@@ -70,7 +70,7 @@ function sync_git_only()
   )
 }
 
-alias ssh-keygen=ssh-keygen -o -a 100 -t ed25519
+alias ssh-keygen="ssh-keygen -o -a 100 -t ed25519"
 
 function bashreload()
 {
