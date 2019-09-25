@@ -68,11 +68,12 @@ function sync_git_only()
       git commit -am "Autocommitted updated scripts from $(hostname)"
     fi
     git pull --rebase
-    if ! git diff --exit-code origin/master master; then
-      git log --reverse origin/master..master
+    if ! git --no-pager diff --exit-code origin/master master; then
+      git --no-pager log --reverse origin/master..master
       if ! read -p "OK to push these changes? (Y/N) " -N 1 confirm; then
         confirm = "N"
       fi
+      echo
       if [[ "$confirm" != "Y" ]] && [[ "$confirm" != "y" ]]; then
         echo "Not pushing yet."
       else
