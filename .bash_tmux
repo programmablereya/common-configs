@@ -2,9 +2,9 @@
 # vim: set filetype=sh:
 
 # tmux configuration files are found alongside this file
-export TMUX_CONF_DIR=${TMUX_CONF_DIR:-"$( dirname "${BASH_SOURCE[0]}" )"}
+export TMUX_CONF_DIR=${TMUX_CONF_DIR:-"$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"}
 # default status script just shows whether a reboot is needed
-export TMUX_STATUS_SCRIPT=${TMUX_STATUS_SCRIPT:-$TMUX_CONF_DIR/.tmux.need-reboot.sh}
+export TMUX_STATUS_SCRIPT=${TMUX_STATUS_SCRIPT:-"$TMUX_CONF_DIR/.tmux.need-reboot.sh"}
 
 function tmux_has_main() {
   tmux -2 has-session -t "Main Screen"
