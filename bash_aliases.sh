@@ -64,7 +64,7 @@ function sync_git_only()
     git pull --rebase
     if ! git diff --exit-code origin/master master; then
       git log --reverse origin..master
-      if ! read "OK to push these changes? (Y/N) " confirm; then
+      if ! read -p "OK to push these changes? (Y/N) " -N 1 confirm; then
         confirm = "N"
       fi
       if [[ "$confirm" != "Y" ]]; then
