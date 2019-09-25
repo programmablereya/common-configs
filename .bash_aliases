@@ -43,6 +43,15 @@ function bashreload()
   source "$HOME"/.bashrc
 }
 
+function scriptupdate()
+{
+  (
+    cd "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
+    git pull 
+  )
+  bashreload
+}
+
 function man ()
 {
   command man "$@" 2>/dev/null || builtin help -m "$@" 2>/dev/null || command man "$@"
