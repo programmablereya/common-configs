@@ -56,6 +56,7 @@ function copy_func()
 
 function bashreload()
 {
+  reload_scripts_only
   (
     cd "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
     needs_push=false
@@ -68,7 +69,6 @@ function bashreload()
       git push
     fi
   )
-  reload_scripts_only
 }
 
 function man ()
