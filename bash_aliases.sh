@@ -59,7 +59,7 @@ function bashreload()
   (
     cd "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
     needs_push=false
-    if git add .; git diff-index --cached --quiet HEAD; then
+    if git add . && ! git diff-index --cached --quiet HEAD; then
       git commit -am "Autocommitted updated scripts from ${hostname}"
       needs_push=true
     fi
