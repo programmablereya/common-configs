@@ -9,6 +9,12 @@ export EDITOR='vim -X'
 sock_proxy=$HOME/.ssh/ssh_auth_sock
 if [ -S "$(readlink $sock_proxy)" ]; then
   SSH_AUTH_SOCK=$sock_proxy
+else
+  (
+    set +x
+    eval `ssh-agent -s`
+    ln -f --symbolic "$SSH_AUTH_SOCK" "$sock_proxy"
+  )
 fi
 
 alias rm="rm -i"
@@ -67,7 +73,7 @@ function sync_git_only()
       if ! read -p "OK to push these changes? (Y/N) " -N 1 confirm; then
         confirm = "N"
       fi
-      if [[ "$confirm" != "Y" ]]; then
+      if [[ "$confirm" != "Y" ]] && [[ "$confirm" != "y" ]]; then
         echo "Not pushing yet."
       else
         git push
