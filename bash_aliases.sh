@@ -58,14 +58,20 @@ function sync_git_only()
 {
   (
     cd "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
-    needs_push=false
     if git add . && ! git diff-index --cached --quiet HEAD; then
-      git commit -am "Autocommitted updated scripts from ${hostname}"
-      needs_push=true
+      git commit -am "Autocommitted updated scripts from $(hostname)"
     fi
     git pull --rebase
-    if [[ "$needs_push" == "true" ]]; then
-      git push
+    if ! git diff --exit-code origin/master master; then
+      git log --reverse origin..master
+      if ! read "OK to push these changes? (Y/N) " confirm; then
+        confirm = "N"
+      fi
+      if [[ "$confirm" != "Y" ]]; then
+        echo "Not pushing yet."
+      else
+        git push
+      fi
     fi
   )
 }
