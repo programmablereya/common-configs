@@ -8,7 +8,7 @@ export EDITOR='vim -X'
 # Update SSH_AUTH_SOCK
 sock_proxy=$HOME/.ssh/ssh_auth_sock
 if [ -S "$(readlink $sock_proxy)" ]; then
-  SSH_AUTH_SOCK=$sock_proxy
+  export SSH_AUTH_SOCK=$sock_proxy
 else
   (
     set -x
