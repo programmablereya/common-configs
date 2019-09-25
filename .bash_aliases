@@ -43,6 +43,15 @@ function bashreload()
   source "$HOME"/.bashrc
 }
 
+# from https://stackoverflow.com/a/1203628
+# Useful for overriding functions defined in these common scripts
+# Usage: copy_func from to
+function copy_func() 
+{
+    declare -F $1 > /dev/null || return 1
+    eval "$(echo "${2}()"; declare -f ${1} | tail -n +2)"
+}
+
 function scriptupdate()
 {
   (
