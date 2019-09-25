@@ -56,5 +56,3 @@ function help ()
 PS1='\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\[\e[0;36m\]\u\[\e[0;33m\]@\[\e[34m\]\h\[\e[0m\]:\[\e[1;32m\]\w\[\e[0m\]\n\$ '
 
 source ~/.bash_tmux
-
-auto_tmux
