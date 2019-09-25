@@ -40,7 +40,7 @@ function bell_after() {
 }
 
 # Reload aliases
-function bashreload()
+function reload_scripts_only()
 {
   source "$HOME"/.bashrc
 }
@@ -48,19 +48,27 @@ function bashreload()
 # from https://stackoverflow.com/a/1203628
 # Useful for overriding functions defined in these common scripts
 # Usage: copy_func from to
-function copy_func() 
+function copy_func()
 {
     declare -F $1 > /dev/null || return 1
     eval "$(echo "${2}()"; declare -f ${1} | tail -n +2)"
 }
 
-function scriptupdate()
+function bashreload()
 {
   (
     cd "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
-    git pull 
+    needs_push=false
+    if git add .; git diff-index --cached --quiet HEAD; then
+      git commit -am "Autocommitted updated scripts from ${hostname}"
+      needs_push=true
+    fi
+    git pull --rebase
+    if [[ "$needs_push" == "true" ]]; then
+      git push
+    fi
   )
-  bashreload
+  reload_scripts_only
 }
 
 function man ()
