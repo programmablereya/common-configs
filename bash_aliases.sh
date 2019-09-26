@@ -14,6 +14,7 @@ else
     set -x
     eval `ssh-agent -s`
     ln -f --symbolic "$SSH_AUTH_SOCK" "$sock_proxy"
+    ssh-add
   )
 fi
 
