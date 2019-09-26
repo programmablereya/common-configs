@@ -49,7 +49,7 @@ function bell_after() {
 # Reload aliases
 function reload_scripts_only()
 {
-  source "$HOME"/.bashrc
+  . "$HOME"/.bashrc
 }
 
 # from https://stackoverflow.com/a/1203628
@@ -112,4 +112,4 @@ function help ()
 
 PS1='\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\[\e[0;36m\]\u\[\e[0;33m\]@\[\e[34m\]\h\[\e[0m\]:\[\e[1;32m\]\w\[\e[0m\]\n\$ '
 
-source "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"/bash_tmux.sh
+. "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"/bash_tmux.sh

@@ -1,4 +1,5 @@
-source ~/.bash_aliases-common
+#!/bin/bash
+. ~/.bash_aliases-common
 
 copy_func tmux_init_main tmux_init_main_base
 

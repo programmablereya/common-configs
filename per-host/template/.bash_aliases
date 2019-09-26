@@ -1,3 +1,4 @@
-source ~/.bash_aliases-common
+#!/bin/bash
+. ~/.bash_aliases-common
 
 auto_tmux
