@@ -24,6 +24,8 @@ if [[ -z "$1" ]]; then
      -execdir "$script" mkdir '{}' \; \
      \)
   chmod 700 ~/.ssh
+  chmod -R u=rwX,g=,o= "$dir"
+  chmod 600 "$dir"/ssh/authorized_keys
 elif [[ "$1" == "link" ]]; then
   ln --symbolic "$hostdir/$relpath" ~/"$relpath"
 elif [[ "$1" == "mkdir" ]]; then
