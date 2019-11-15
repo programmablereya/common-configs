@@ -33,7 +33,7 @@ function go_tmux ()
 
 function auto_tmux ()
 {
-  if [[ -n "$PS1" ]] && [[ "$TERM" != screen* ]] && [[ -z "$ALREADY_TRIED_STARTING_TMUX" ]]; then
+  if [[ -t 1 ]] && [[ -t 0 ]] && [[ -t 2 ]] && [[ "$TERM" != screen* ]] && [[ -z "$ALREADY_TRIED_STARTING_TMUX" ]]; then
     ALREADY_TRIED_STARTING_TMUX=true
     echo "Switching to tmux, press Ctrl+C to cancel...";
     sleep 1s && go_tmux -x
