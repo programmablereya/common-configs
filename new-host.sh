@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ ! -d ~/.common-configs ]]; then
-  git clone git@github.com:programmablereya/common-configs.git ~/.common-configs
+  git clone https://github.com/programmablereya/common-configs.git ~/.common-configs
   cd ~/.common-configs
 else
   cd ~/.common-configs
