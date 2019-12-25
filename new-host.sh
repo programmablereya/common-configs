@@ -29,8 +29,8 @@ if [[ "$ORIGIN" != 'git@github.com:programmablereya/common-configs.git' ]]; then
   git remote set-url origin git@github.com:programmablereya/common-configs.git
 fi
 
-GITMAIL=$(git config user.email)
-GITUSER=$(git config user.name)
+GITMAIL=$(git config --get user.email || true)
+GITUSER=$(git config --get user.name || true)
 if [[ "$GITMAIL" != 'mstaib.git@reya.zone' ]] || [[ "$GITUSER" != 'Mari' ]]; then
   git config user.email 'mstaib.git@reya.zone'
   git config user.name 'Mari'
