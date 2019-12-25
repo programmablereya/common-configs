@@ -27,6 +27,13 @@ fi
 ORIGIN=$(git ls-remote --get-url origin)
 if [[ "$ORIGIN" != 'git@github.com:programmablereya/common-configs.git' ]]; then
   git remote set-url origin git@github.com:programmablereya/common-configs.git
-
-  sync_git_only
 fi
+
+GITMAIL=$(git config user.email)
+GITUSER=$(git config user.name)
+if [[ "$GITMAIL" != 'mstaib.git@reya.zone' ]] || [[ "$GITUSER" != 'Mari' ]]; then
+  git config user.email 'mstaib.git@reya.zone'
+  git config user.name 'Mari'
+fi
+
+sync_git_only
