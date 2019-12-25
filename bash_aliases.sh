@@ -9,9 +9,8 @@ export EDITOR='vim -X'
 sock_proxy=$HOME/.ssh/ssh_auth_sock
 if [ -S "$(readlink $sock_proxy)" ]; then
   export SSH_AUTH_SOCK=$sock_proxy
-else
+elif [[ -d $HOME/.ssh ]]; then
   (
-    set -x
     eval `ssh-agent -s`
     ln -f --symbolic "$SSH_AUTH_SOCK" "$sock_proxy"
     ssh-add
