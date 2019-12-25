@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eux
+
 if [[ ! -d ~/.common-configs ]]; then
   git clone https://github.com/programmablereya/common-configs.git ~/.common-configs
   cd ~/.common-configs
@@ -13,8 +15,8 @@ source ./bash_aliases.sh
 ./install.sh
 
 if [[ ! -f ~/.ssh/id_ed25519.pub ]]; then
-  ssh-keygen
-   
+  ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519
+
   ssh-authorize-key ~/.ssh/id_ed25519.pub
 
   echo "*** New keypair generated. Please add the new public key to github/bitbucket authorized keys:"
