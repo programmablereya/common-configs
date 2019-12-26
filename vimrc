@@ -1,6 +1,10 @@
 " link destination: $HOME/.vimrc
+
 " Enable modern Vim features not compatible with Vi spec.
 set nocompatible
+
+" Run Pathogen package manager
+execute pathogen#infect()
 
 " Enable file type based indent configuration and syntax highlighting.
 " Note that when code is pasted via the terminal, vim by default does not detect
@@ -13,14 +17,7 @@ set nocompatible
 filetype plugin indent on
 syntax on
 
-" So we can see tabs and trailing spaces.
-hi SpecialKey ctermbg=Yellow guibg=Yellow
-" Make it so that tabs and trailing spaces are always visible:
-" (Relys on syntax highlighting to turn them yellow.)
-set list
-set listchars=tab:\ \ ,trail:\ ,extends:»,precedes:«
-let g:Powerline_symbols = 'unicode'
-let g:Powerline_stl_path_style = 'short'
+let g:airline#extensions#tabline#enabled = 1
 set modeline
 set expandtab
 set shiftwidth=2

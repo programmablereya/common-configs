@@ -3,7 +3,7 @@
 set -eux
 
 if [[ ! -d ~/.common-configs ]]; then
-  git clone https://github.com/programmablereya/common-configs.git ~/.common-configs
+  git clone --recurse-submodules https://github.com/programmablereya/common-configs.git ~/.common-configs
   cd ~/.common-configs
 else
   cd ~/.common-configs
