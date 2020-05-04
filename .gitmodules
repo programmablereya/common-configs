@@ -4,3 +4,6 @@
 [submodule "vim/bundle/vim-gfm-syntax"]
 	path = vim/bundle/vim-gfm-syntax
 	url = https://github.com/rhysd/vim-gfm-syntax.git
+[submodule "ssh-find-agent"]
+	path = ssh-find-agent
+	url = https://github.com/wwalker/ssh-find-agent.git
