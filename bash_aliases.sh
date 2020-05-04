@@ -5,18 +5,6 @@
 # Install EDITOR
 export EDITOR='vim -X'
 
-# Update SSH_AUTH_SOCK
-sock_proxy=$HOME/.ssh/ssh_auth_sock
-if [ -S "$(readlink $sock_proxy)" ]; then
-  export SSH_AUTH_SOCK=$sock_proxy
-elif [[ -d $HOME/.ssh ]]; then
-  (
-    eval `ssh-agent -s`
-    ln -f --symbolic "$SSH_AUTH_SOCK" "$sock_proxy"
-    ssh-add
-  )
-fi
-
 alias rm="rm -i"
 alias cp="cp -i"
 alias mv="mv -i"
@@ -114,3 +102,4 @@ PS1='\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\[\e[0;36m\]\u\[\e[0;33m\]@\[
 
 . "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"/bash_tmux.sh
 . "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"/ssh-find-agent/ssh-find-agent.sh
+ssh_find_agent -a || eval $(ssh-agent) > /dev/null
