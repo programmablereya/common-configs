@@ -3,8 +3,14 @@
 " Enable modern Vim features not compatible with Vi spec.
 set nocompatible
 
+" Enable mouse support.
+set mouse=a
+
 " Run Pathogen package manager
 execute pathogen#infect()
+
+" Set up vim-gfm-syntax
+let g:gfm_syntax_emoji_conceal = 1
 
 " Enable file type based indent configuration and syntax highlighting.
 " Note that when code is pasted via the terminal, vim by default does not detect
