@@ -4,7 +4,7 @@ if [ -x /etc/ssh/sshrc ]; then
   . /etc/ssh/sshrc
 fi
 
-if [ -n "$SSH_AUTH_SOCK" ]; then
-  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
-  export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
-fi
+#if [ -n "$SSH_AUTH_SOCK" ]; then
+#  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+#  export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+#fi
