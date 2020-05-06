@@ -17,13 +17,13 @@ set -eux
 ./install.sh
 
 if [[ ! -f ~/.ssh/id_ed25519.pub ]]; then
-  ssh-keygen -f ~/.ssh/id_ed25519
+  ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519
 
   ssh-authorize-key ~/.ssh/id_ed25519.pub
 
   echo "*** New keypair generated. Please add the new public key to github/bitbucket authorized keys:"
   cat ~/.ssh/id_ed25519.pub
-  read -p "Press ENTER when done."
+  read -p "Press ENTER after adding this public key to github/bitbucket authorized keys."
 fi
 
 ORIGIN=$(git ls-remote --get-url origin)
