@@ -23,8 +23,24 @@ if [[ ! -f ~/.ssh/id_ed25519.pub ]]; then
 
   echo "*** New keypair generated. Please add the new public key to github/bitbucket authorized keys:"
   cat ~/.ssh/id_ed25519.pub
-  read -p "Press ENTER after adding this public key to github/bitbucket authorized keys."
+  read -s -p "Press ENTER after adding this public key to github/bitbucket authorized keys."
 fi
+
+function getCurrentGithubId() {
+  local RESULT;
+  RESULT=$(ssh -o "IdentitiesOnly=yes" -i ~/.ssh/id_ed25519 -T git@github.com </dev/null 2>&1) || echo "$RESULT" >&2; exit 1
+  USERNAME=$(echo "$RESULT" | sed -n 's/^Hi \([^!]\+\)! You'"'"'ve successfully authenticated, but GitHub does not provide shell access\.$/Successfully authenticated to GitHub as \1/; T; p') || exit 1
+  echo "$USERNAME"
+  [[ -n "$USERNAME" ]];
+}
+
+READING=true
+while "$READING" && ! RESULT=$(getCurrentGithubId) || [[ $RESULT != 'programmablereya' ]]; do
+  read -p "Press ENTER after adding this public key to github/bitbucket authorized keys, or enter 'no' to skip this step: " FROM_ME_DAWG
+  if [[ 'no' == "$FROM_ME_DAWG" ]]; then
+    READING=false
+  fi
+done
 
 ORIGIN=$(git ls-remote --get-url origin)
 if [[ "$ORIGIN" != 'git@github.com:programmablereya/common-configs.git' ]]; then
