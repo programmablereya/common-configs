@@ -10,7 +10,7 @@ set mouse=a
 execute pathogen#infect()
 
 " Set up vim-gfm-syntax
-let g:gfm_syntax_emoji_conceal = 1
+let g:gfm_syntax_emoji_conceal = 0
 
 " Enable file type based indent configuration and syntax highlighting.
 " Note that when code is pasted via the terminal, vim by default does not detect
