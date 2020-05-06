@@ -10,12 +10,14 @@ else
   git pull
 fi
 
+set +eux
 source ./bash_aliases.sh
+set -eux
 
 ./install.sh
 
 if [[ ! -f ~/.ssh/id_ed25519.pub ]]; then
-  ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519
+  ssh-keygen -f ~/.ssh/id_ed25519
 
   ssh-authorize-key ~/.ssh/id_ed25519.pub
 
