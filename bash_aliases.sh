@@ -110,4 +110,4 @@ ssh_find_agent -a || eval $(ssh-agent) > /dev/null
 
 export GITAWAREPROMPT="$COMMON_CONFIGS_PATH"/git-aware-prompt
 . "$GITAWAREPROMPT"/main.sh
-PS1='\[$bldred\]${debian_chroot:+($debian_chroot)}\[$txtrst\]\[$txtcyn\]\u\[$txtylw\]@\[$txtblu\]\h\[$txtrst\]:\[$bldgrn\]\w\[$txtrst\] \[$txtcyn\]$git_branch\[$txtred\]${git_dirty:+%}\[$txtrst\]\n\$ '
+PS1='\[$bldred\]${debian_chroot:+($debian_chroot)}\[$txtrst\]\[$txtpur\]\u\[$txtrst\]\[$txtylw\]@\[$txtrst\]\[$txtblu\]\h\[$txtrst\]:\[$bldgrn\]\w\[$txtrst\] \[$txtcyn\]$git_branch\[$txtrst\]\[$bldred\]${git_dirty}\[$txtrst\]\n\$ '
