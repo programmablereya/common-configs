@@ -105,6 +105,7 @@ COMMON_CONFIGS_PATH="$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
 
 . "$COMMON_CONFIGS_PATH"/bash_tmux.sh
 . "$COMMON_CONFIGS_PATH"/ssh-find-agent/ssh-find-agent.sh
-. "$COMMON_CONFIGS_PATH"/git-aware-prompt/main.sh
+export GITAWAREPROMPT="$COMMON_CONFIGS_PATH"/git-aware-prompt
+. "$GITAWAREPROMPT"/main.sh
 ssh_find_agent -a || eval $(ssh-agent) > /dev/null
 PS1='\[$bldred\]${debian_chroot:+($debian_chroot)}\[$txtcyn\]\u\[$txtylw\]@\[$txtblu\]\h\[$txtrst\]:\[$bldgrn\]\w\[$txtrst\] \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\n\$ "
