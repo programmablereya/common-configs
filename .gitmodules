@@ -10,3 +10,6 @@
 [submodule "vim/bundle/ultisnips"]
 	path = vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
+[submodule "git-aware-prompt"]
+	path = git-aware-prompt
+	url = https://github.com/jimeh/git-aware-prompt.git

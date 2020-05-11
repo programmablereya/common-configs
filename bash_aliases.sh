@@ -98,8 +98,13 @@ function help ()
   builtin help -m "$@" 2>/dev/null || command man "$@" 2>/dev/null || builtin help -m "$@"
 }
 
-PS1='\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\[\e[0;36m\]\u\[\e[0;33m\]@\[\e[34m\]\h\[\e[0m\]:\[\e[1;32m\]\w\[\e[0m\]\n\$ '
+# This is, almost without fail, the right value.
+export DISPLAY="${DISPLAY:-:0.0}"
 
-. "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"/bash_tmux.sh
-. "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"/ssh-find-agent/ssh-find-agent.sh
+COMMON_CONFIGS_PATH="$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
+
+. "$COMMON_CONFIGS_PATH"/bash_tmux.sh
+. "$COMMON_CONFIGS_PATH"/ssh-find-agent/ssh-find-agent.sh
+. "$COMMON_CONFIGS_PATH"/git-aware-prompt/main.sh
 ssh_find_agent -a || eval $(ssh-agent) > /dev/null
+PS1='\[$bldred\]${debian_chroot:+($debian_chroot)}\[$txtcyn\]\u\[$txtylw\]@\[$txtblu\]\h\[$txtrst\]:\[$bldgrn\]\w\[$txtrst\] \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\n\$ "
