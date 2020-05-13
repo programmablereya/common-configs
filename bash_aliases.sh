@@ -90,11 +90,24 @@ function bashreload()
 
 function man ()
 {
-  command man "$@" 2>/dev/null || builtin help -m "$@" 2>/dev/null || command man "$@"
+  if command man "$@" >&/dev/null; then
+    command man "$@"
+  elif builtin help -m "$@" >&/dev/null; then
+    builtin help -m "$@" | less
+  else
+    command man "$@"
+  fi
 }
 
 function help ()
 {
+  if builtin help -m "$@" >&/dev/null; then
+    builtin help "$@" | less
+  elif command man "$@" >&/dev/null; then
+    command man "$@"
+  else
+    builtin help -m "$@"
+  fi
   builtin help -m "$@" 2>/dev/null || command man "$@" 2>/dev/null || builtin help -m "$@"
 }
 
