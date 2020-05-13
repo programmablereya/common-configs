@@ -10,7 +10,7 @@ auto_tmux
 function tmux_start_branch() {
   (
     branch=${1:?}
-    tmux -2 new-window -a -t "Main Screen:1" -c ~ -e BRANCH_NAME="$branch" 'bash -c "start_branch \"\$BRANCH_NAME\"; exec bash"'
+    tmux -2 new-window -a -t "Main Screen:1" -c ~ -e BRANCH_NAME="$branch" 'bash -ic "start_branch \"\$BRANCH_NAME\"; exec bash"'
   )
 }
 
