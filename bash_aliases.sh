@@ -93,7 +93,7 @@ function man ()
   if command man "$@" >&/dev/null; then
     command man "$@"
   elif builtin help -m "$@" >&/dev/null; then
-    builtin help -m "$@" | command man -L -
+    builtin help -m "$@" | command man -l -
   else
     command man "$@"
   fi
@@ -102,7 +102,7 @@ function man ()
 function help ()
 {
   if builtin help -m "$@" >&/dev/null; then
-    builtin help "$@" | command man -L -
+    builtin help "$@" | command man -l -
   elif command man "$@" >&/dev/null; then
     command man "$@"
   else
