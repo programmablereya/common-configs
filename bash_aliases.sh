@@ -125,6 +125,7 @@ COMMON_CONFIGS_PATH="$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
 . "$COMMON_CONFIGS_PATH"/ssh-find-agent/ssh-find-agent.sh
 ssh_find_agent -a || eval $(ssh-agent) > /dev/null
 
+PROMPT_COMMAND=""
 export GITAWAREPROMPT="$COMMON_CONFIGS_PATH"/git-aware-prompt
 . "$GITAWAREPROMPT"/main.sh
 
