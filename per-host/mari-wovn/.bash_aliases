@@ -7,7 +7,7 @@ fi
 
 auto_tmux
 
-function start_branch() {
+function wovn_start() {
   (
     # set -o errexit # Can't do this inside a function
     set -o nounset
@@ -31,14 +31,14 @@ function _start_branch() {
       cd ~/equalizer.git || exit "$?"
       printf "=== Retrieving the latest data from the repository...\n"
       git fetch --all || exit "$?"
-      printf "=== Creating the branch 'feature/${branch}' from develop_front and checking it out in a new working tree at ~/branches/${branch}...\n"
+      printf "=== Checking out the branch named feature/${branch} in a new working tree at ~/branches/${branch}...\n"
       git worktree add -b "feature/${branch}" ~/branches/"${branch}" develop_front || git worktree add ~/branches/"${branch}" "feature/${branch}" || exit "$?"
     else
       printf "=== Accessing an existing branch named ${branch}...\n"
     fi
     cd ~/branches/"${branch}" || exit "$?"
-    update_branch || exit "$?"
-    printf "\a=== Your new branch ${branch} is ready!\n"
+    wovn_update || exit "$?"
+    printf "\a=== Your branch ${branch} is ready!\n"
   )
   if [[ -d ~/branches/"$branch" ]]; then
     cd ~/branches/"${branch}"
@@ -55,7 +55,7 @@ function get_remote_branch_name() {
   git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
 }
 
-function update_branch() {
+function wovn_update() {
   (
     # set -o errexit # Can't do this inside a function
     set -o nounset
@@ -67,32 +67,39 @@ function update_branch() {
     fi
     git rebase develop_front || exit "$?"
     printf "=== Updating the dependencies...\n"
-    install_equalizer_deps
+    wovn_install
   )
 }
 
-function install_equalizer_deps() {
+function wovn_install() {
   (
     # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
-    printf "Installing Ruby dependencies...\n"
-    bundle install || exit "$?"
-    printf "Installing Javascript dependencies...\n"
-    printf "Installing in top level...\n"
-    yarn install || exit "$?"
-    printf "Installing in widget...\n"
+    if ! bundle check >/dev/null; then
+      printf "=== Installing Ruby dependencies...\n"
+      bundle install || exit "$?"
+    fi
+    if ! yarn install --offline --check-files --silent; then
+      printf "=== Installing Javascript dependencies in top level...\n"
+      yarn install || exit "$?"
+    fi
     cd widget || exit "$?"
-    yarn install || exit "$?"
-    yarn build || exit "$?"
+    if ! yarn install --offline --check-files --silent; then
+      printf "=== Installing Javascript dependencies in widget...\n"
+      yarn install || exit "$?"
+      yarn build || exit "$?"
+    fi
     cd .. || exit "$?"
-    printf "Installing in front...\n"
     cd front || exit "$?"
-    yarn install
+    if ! yarn install --offline --check-files --silent; then
+      printf "=== Installing Javascript dependencies in front...\n"
+      yarn install
+    fi
   )
 }
 
-function delete_local_branch() {
+function wovn_delete() {
   (
     # set -o errexit # Can't do this inside a function
     set -o nounset
@@ -122,5 +129,5 @@ function _branch_completions() {
   COMPREPLY+=($(compgen -W "$(_list_feature_branches)" "${COMP_WORDS[1]}"))
 }
 
-complete -F _branch_completions start_branch
-complete -F _branch_completions delete_local_branch
+complete -F _branch_completions wovn_start
+complete -F _branch_completions wovn_delete
