@@ -13,7 +13,8 @@ function start_branch() {
     set -o nounset
     set -o pipefail
     branch=${1:?}
-    tmux -2 new-window -a -t "Main Screen:1" -c ~ -e BRANCH_NAME="$branch" 'bash -ic "_start_branch \"\$BRANCH_NAME\"; exec bash"'
+    branch=${branch#feature/}
+    tmux -2 new-window -a -t "Main Screen:1" -n "$branch" -c ~ -e BRANCH_NAME="$branch" 'bash -ic "_start_branch \"\$BRANCH_NAME\"; exec bash"'
   )
 }
 
@@ -61,8 +62,10 @@ function update_branch() {
     set -o pipefail
     printf "=== Updating the branch...\n"
     git fetch --all || exit "$?"
-    git pull --rebase || exit "$?"
-    git rebase --interactive develop_front || exit "$?"
+    if get_remote_branch_name >&/dev/null; then
+      git pull --rebase || exit "$?"
+    fi
+    git rebase develop_front || exit "$?"
     printf "=== Updating the dependencies...\n"
     install_equalizer_deps
   )
