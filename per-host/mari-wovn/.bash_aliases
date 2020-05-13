@@ -50,7 +50,7 @@ function get_current_branch_name() {
 }
 
 function get_remote_branch_name() {
-  git symbolic-ref 
+  git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
 }
 
 function update_branch() {
