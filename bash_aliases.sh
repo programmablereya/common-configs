@@ -88,12 +88,15 @@ function bashreload()
   reload_scripts_only
 }
 
+function help_prompt() {
+  echo '\ Help\ page\ '"$@"'\ ?ltline\ %lt?L/%L.:byte\ %bB?s/%s..?\ (END):?pB\ %pB\\%..(press h for help or q to quit)'
+}
 function man ()
 {
   if command man "$@" >&/dev/null; then
     command man "$@"
   elif builtin help -m "$@" >&/dev/null; then
-    builtin help -m "$@" | command man -l -
+    builtin help -m "$@" | command man -l -r "$(help_prompt "$@")" -
   else
     command man "$@"
   fi
@@ -102,7 +105,7 @@ function man ()
 function help ()
 {
   if builtin help -m "$@" >&/dev/null; then
-    builtin help "$@" | command man -l -
+    builtin help "$@" | command man -l -r "$(help_prompt "$@")" -
   elif command man "$@" >&/dev/null; then
     command man "$@"
   else
@@ -110,6 +113,7 @@ function help ()
   fi
   builtin help -m "$@" 2>/dev/null || command man "$@" 2>/dev/null || builtin help -m "$@"
 }
+
 
 # This is, almost without fail, the right value.
 export DISPLAY="${DISPLAY:-:0.0}"

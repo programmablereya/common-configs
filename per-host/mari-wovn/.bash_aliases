@@ -9,6 +9,9 @@ auto_tmux
 
 function tmux_start_branch() {
   (
+    set -o errexit
+    set -o nounset
+    set -o pipefail
     branch=${1:?}
     tmux -2 new-window -a -t "Main Screen:1" -c ~ -e BRANCH_NAME="$branch" 'bash -ic "start_branch \"\$BRANCH_NAME\"; exec bash"'
   )
@@ -17,19 +20,21 @@ function tmux_start_branch() {
 function start_branch() {
   branch=${1:?}
   (
-    set -eu
+    set -o errexit
+    set -o nounset
+    set -o pipefail
     if [[ ! -d ~/branches/"$branch" ]]; then
       printf "=== Setting up a branch named ${branch}...\n"
-      cd ~/.equalizer
+      cd ~/equalizer.git || exit 1
       printf "=== Retrieving the latest data from the repository...\n"
-      git fetch --all
+      git fetch --all || exit 1
       printf "=== Creating the branch 'feature/${branch}' from develop_front and checking it out in a new working tree at ~/branches/${branch}...\n"
-      git worktree add -b "feature/${branch}" ~/branches/"${branch}" develop_front || git worktree add ~/branches/"${branch}" "feature/${branch}"
+      git worktree add -b "feature/${branch}" ~/branches/"${branch}" develop_front || git worktree add ~/branches/"${branch}" "feature/${branch}" || exit 1
     else
       printf "=== Accessing an existing branch named ${branch}...\n"
     fi
-    cd ~/branches/"${branch}"
-    update_branch
+    cd ~/branches/"${branch}" || exit 1
+    update_branch || exit 1
     printf "\a=== Your new branch ${branch} is ready!\n"
   ) && \
   cd ~/branches/"${branch}"
@@ -37,9 +42,12 @@ function start_branch() {
 
 function update_branch() {
   (
+    set -o errexit
+    set -o nounset
+    set -o pipefail
     printf "=== Updating the branch...\n"
-    git fetch --all
-    git pull --rebase
+    git fetch --all || exit 1
+    git pull --rebase || exit 1
     git rebase --interactive develop_front
     printf "=== Updating the dependencies...\n"
     install_equalizer_deps
@@ -48,7 +56,9 @@ function update_branch() {
 
 function install_equalizer_deps() {
   (
-    set -eu
+    set -o errexit
+    set -o nounset
+    set -o pipefail
     printf "Installing Ruby dependencies...\n"
     bundle install
     printf "Installing Javascript dependencies...\n"
