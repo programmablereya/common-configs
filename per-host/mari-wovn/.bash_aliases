@@ -20,6 +20,7 @@ function tmux_start_branch() {
 
 function start_branch() {
   branch=${1:?}
+  branch=${branch#feature/}
   (
     # set -o errexit # Can't do this inside a function
     set -o nounset
@@ -99,5 +100,8 @@ function delete_local_branch() {
     worktree="$(git worktree list --porcelain | grep -B2 ${branch} | cut -d' ' -f2 | head -n1)" || exit "$?"
     git worktree remove "$worktree" || exit "$?"
     git branch -d "$branch" || exit "$?"
-  ) && cd ~/equalizer.git
+  ); local lastexit="$?"
+  if [[ ! -d "$PWD" ]]; then
+    cd ~/equalizer.git
+  fi
 }
