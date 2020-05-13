@@ -17,6 +17,7 @@ function tmux_start_branch() {
   )
 }
 
+
 function start_branch() {
   branch=${1:?}
   (
@@ -36,8 +37,12 @@ function start_branch() {
     cd ~/branches/"${branch}" || exit "$?"
     update_branch || exit "$?"
     printf "\a=== Your new branch ${branch} is ready!\n"
-  ) && \
-  cd ~/branches/"${branch}"
+  )
+  if [[ -d ~/branches/"$branch" ]]; then
+    cd ~/branches/"${branch}"
+  else
+    cd ~/equalizer.git
+  fi
 }
 
 function update_branch() {
@@ -73,4 +78,7 @@ function install_equalizer_deps() {
     cd front || exit "$?"
     yarn install
   )
+}
+
+function delete_branch() {
 }
