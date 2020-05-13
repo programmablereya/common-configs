@@ -7,18 +7,18 @@ fi
 
 auto_tmux
 
-function tmux_start_branch() {
+function start_branch() {
   (
     # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
     branch=${1:?}
-    tmux -2 new-window -a -t "Main Screen:1" -c ~ -e BRANCH_NAME="$branch" 'bash -ic "start_branch \"\$BRANCH_NAME\"; exec bash"'
+    tmux -2 new-window -a -t "Main Screen:1" -c ~ -e BRANCH_NAME="$branch" 'bash -ic "_start_branch \"\$BRANCH_NAME\"; exec bash"'
   )
 }
 
 
-function start_branch() {
+function _start_branch() {
   branch=${1:?}
   branch=${branch#feature/}
   (
@@ -106,3 +106,14 @@ function delete_local_branch() {
   fi
   return $lastexit
 }
+
+function _branch_completions() {
+  COMPREPLY+=($(
+    git --git-dir ~/equalizer.git for-each-ref --format '%(refname:short)' refs/heads/ \
+      | grep -vF $'develop\ndevelop_front\nmaster' \
+      | sed 's#^feature/##'
+  ))
+}
+
+complete -F _branch_completions tmux_start_branch
+complete -F _branch_completions delete_local_branch
