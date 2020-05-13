@@ -94,10 +94,10 @@ function delete_local_branch() {
     set -o nounset
     set -o pipefail
     branch=${1:+feature/$1}
-    branch=${branch:-$(get_current_branch_name)} || exit "$0"
+    branch=${branch:-$(get_current_branch_name)} || exit "$?"
     cd ~/equalizer.git
-    worktree="$(git worktree list --porcelain | grep -B2 ${branch} | cut -d' ' -f2 | head -n1)" || exit "$0"
-    git worktree remove "$worktree" || exit "$0"
-    git branch -d "$branch" || exit "$0"
+    worktree="$(git worktree list --porcelain | grep -B2 ${branch} | cut -d' ' -f2 | head -n1)" || exit "$?"
+    git worktree remove "$worktree" || exit "$?"
+    git branch -d "$branch" || exit "$?"
   )
 }
