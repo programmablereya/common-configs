@@ -59,7 +59,7 @@ function update_branch() {
     set -o nounset
     set -o pipefail
     printf "=== Updating the branch...\n"
-    git fetch --all --prune || exit "$?"
+    git fetch --all || exit "$?"
     git pull --rebase || exit "$?"
     git rebase --interactive develop_front || exit "$?"
     printf "=== Updating the dependencies...\n"
