@@ -131,11 +131,11 @@ export GITAWAREPROMPT="$COMMON_CONFIGS_PATH"/git-aware-prompt
 function prettylastexit() {
   local exitcode=$?
   if [[ -z $exitcode ]]; then
-    echo "[---]\[$txtrst\] "
+    echo "[---]$txtrst "
   elif [[ $exitcode == 0 ]]; then
-    echo "\[$txtgrn\][ OK]\[$txtrst\] "
+    echo "$txtgrn[ OK]$txtrst "
   else
-    printf "\[$txtred\][%3.3s]\[$txtrst\] " "$exitcode"
+    printf "$txtred[%3.3s]$txtrst " "$exitcode"
   fi
 }
 
