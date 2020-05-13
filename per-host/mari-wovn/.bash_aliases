@@ -66,7 +66,7 @@ function wovn_update() {
       git pull --rebase || exit "$?"
     fi
     git rebase develop_front || exit "$?"
-    printf "=== Updating the dependencies...\n"
+    printf "=== Checking dependencies...\n"
     wovn_install
   )
 }
@@ -80,19 +80,19 @@ function wovn_install() {
       printf "=== Installing Ruby dependencies...\n"
       bundle install || exit "$?"
     fi
-    if ! yarn install --offline --check-files --no-progress --ignore-optional --silent; then
+    if ! yarn install --offline --check-files --no-progress --ignore-optional --non-interactive --silent 2>/dev/null; then
       printf "=== Installing Javascript dependencies in top level...\n"
       yarn install || exit "$?"
     fi
     cd widget || exit "$?"
-    if ! yarn install --offline --check-files --no-progress --ignore-optional --silent; then
+    if ! yarn install --offline --check-files --no-progress --ignore-optional --non-interactive --silent 2>/dev/null; then
       printf "=== Installing Javascript dependencies in widget...\n"
       yarn install || exit "$?"
       yarn build || exit "$?"
     fi
     cd .. || exit "$?"
     cd front || exit "$?"
-    if ! yarn install --offline --check-files --no-progress --ignore-optional --silent; then
+    if ! yarn install --offline --check-files --no-progress --ignore-optional --non-interactive --silent 2>/dev/null; then
       printf "=== Installing Javascript dependencies in front...\n"
       yarn install
     fi
