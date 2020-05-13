@@ -9,7 +9,7 @@ auto_tmux
 
 function tmux_start_branch() {
   (
-    set -o errexit
+    # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
     branch=${1:?}
@@ -20,21 +20,21 @@ function tmux_start_branch() {
 function start_branch() {
   branch=${1:?}
   (
-    set -o errexit
+    # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
     if [[ ! -d ~/branches/"$branch" ]]; then
       printf "=== Setting up a branch named ${branch}...\n"
-      cd ~/equalizer.git || exit 1
+      cd ~/equalizer.git || exit "$?"
       printf "=== Retrieving the latest data from the repository...\n"
-      git fetch --all || exit 1
+      git fetch --all || exit "$?"
       printf "=== Creating the branch 'feature/${branch}' from develop_front and checking it out in a new working tree at ~/branches/${branch}...\n"
-      git worktree add -b "feature/${branch}" ~/branches/"${branch}" develop_front || git worktree add ~/branches/"${branch}" "feature/${branch}" || exit 1
+      git worktree add -b "feature/${branch}" ~/branches/"${branch}" develop_front || git worktree add ~/branches/"${branch}" "feature/${branch}" || exit "$?"
     else
       printf "=== Accessing an existing branch named ${branch}...\n"
     fi
-    cd ~/branches/"${branch}" || exit 1
-    update_branch || exit 1
+    cd ~/branches/"${branch}" || exit "$?"
+    update_branch || exit "$?"
     printf "\a=== Your new branch ${branch} is ready!\n"
   ) && \
   cd ~/branches/"${branch}"
@@ -42,13 +42,13 @@ function start_branch() {
 
 function update_branch() {
   (
-    set -o errexit
+    # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
     printf "=== Updating the branch...\n"
-    git fetch --all || exit 1
-    git pull --rebase || exit 1
-    git rebase --interactive develop_front
+    git fetch --all || exit "$?"
+    git pull --rebase || exit "$?"
+    git rebase --interactive develop_front || exit "$?"
     printf "=== Updating the dependencies...\n"
     install_equalizer_deps
   )
@@ -56,21 +56,21 @@ function update_branch() {
 
 function install_equalizer_deps() {
   (
-    set -o errexit
+    # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
     printf "Installing Ruby dependencies...\n"
-    bundle install
+    bundle install || exit "$?"
     printf "Installing Javascript dependencies...\n"
     printf "Installing in top level...\n"
-    yarn install
+    yarn install || exit "$?"
     printf "Installing in widget...\n"
-    pushd widget
-    yarn install
-    yarn build
-    popd
+    cd widget || exit "$?"
+    yarn install || exit "$?"
+    yarn build || exit "$?"
+    cd .. || exit "$?"
     printf "Installing in front...\n"
-    pushd front
+    cd front || exit "$?"
     yarn install
   )
 }
