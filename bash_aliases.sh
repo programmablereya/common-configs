@@ -136,7 +136,7 @@ function prettylastexit() {
   elif [[ $exitcode == 0 ]]; then
     echo "$txtgrn[ OK]$txtrst "
   else
-    printf "$bldred[%3.3s]$txtrst " "$exitcode"
+    printf "$txtred[%3.3s]$txtrst " "$exitcode"
   fi
 }
 
