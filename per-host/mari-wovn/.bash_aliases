@@ -45,13 +45,21 @@ function start_branch() {
   fi
 }
 
+function get_current_branch_name() {
+  git symbolic-ref --quiet --short HEAD
+}
+
+function get_remote_branch_name() {
+  git symbolic-ref 
+}
+
 function update_branch() {
   (
     # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
     printf "=== Updating the branch...\n"
-    git fetch --all || exit "$?"
+    git fetch --all --prune || exit "$?"
     git pull --rebase || exit "$?"
     git rebase --interactive develop_front || exit "$?"
     printf "=== Updating the dependencies...\n"
@@ -80,5 +88,16 @@ function install_equalizer_deps() {
   )
 }
 
-function delete_branch() {
+function delete_local_branch() {
+  (
+    # set -o errexit # Can't do this inside a function
+    set -o nounset
+    set -o pipefail
+    branch=${1:+feature/$1}
+    branch=${branch:-$(get_current_branch_name)} || exit "$0"
+    cd ~/equalizer.git
+    worktree="$(git worktree list --porcelain | grep -B2 ${branch} | cut -d' ' -f2 | head -n1)" || exit "$0"
+    git worktree remove "$worktree" || exit "$0"
+    git branch -d "$branch" || exit "$0"
+  )
 }
