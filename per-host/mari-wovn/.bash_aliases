@@ -116,7 +116,7 @@ function _branch_completions() {
   if [[ $COMP_CWORD -ne 1 ]]; then
     return
   fi
-  COMPREPLY+=($(compgen -F _list_feature_branches "${COMP_WORDS[1]}"))
+  COMPREPLY+=($(compgen -W $(_list_feature_branches) "${COMP_WORDS[1]}"))
 }
 
 complete -F _branch_completions start_branch
