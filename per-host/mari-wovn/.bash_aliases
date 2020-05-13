@@ -113,7 +113,7 @@ function _list_feature_branches() {
 }
 
 function _branch_completions() {
-  if [[ $COMP_CWORD -ne 1 ]];
+  if [[ $COMP_CWORD -ne 1 ]]; then
     return
   fi
   COMPREPLY+=($(compgen -F _list_feature_branches "${COMP_WORDS[1]}"))
