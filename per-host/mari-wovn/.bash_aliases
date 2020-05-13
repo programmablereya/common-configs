@@ -15,16 +15,16 @@ function tmux_start_branch() {
 }
 
 function start_branch() {
+  branch=${1:?}
   (
     set -eu
-    branch=${1:?}
     if [[ ! -d ~/branches/"$branch" ]]; then
       printf "=== Setting up a branch named ${branch}...\n"
       cd ~/.equalizer
       printf "=== Retrieving the latest data from the repository...\n"
       git fetch --all
       printf "=== Creating the branch 'feature/${branch}' from develop_front and checking it out in a new working tree at ~/branches/${branch}...\n"
-      git worktree add -b "feature/${branch}" ~/branches/"${branch}" develop_front
+      git worktree add -b "feature/${branch}" ~/branches/"${branch}" develop_front || git worktree add ~/branches/"${branch}" "feature/${branch}"
     else
       printf "=== Accessing an existing branch named ${branch}...\n"
     fi
