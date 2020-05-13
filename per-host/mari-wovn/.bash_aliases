@@ -115,5 +115,5 @@ function _branch_completions() {
   ))
 }
 
-complete -F _branch_completions tmux_start_branch
+complete -F _branch_completions start_branch
 complete -F _branch_completions delete_local_branch
