@@ -139,5 +139,4 @@ function prettylastexit() {
   fi
 }
 
-PROMPT_COMMAND="update_lastexit; ${PROMPT_COMMAND}"
 PS1='$(prettylastexit)\[$bldred\]${debian_chroot:+($debian_chroot)}\[$txtrst\]\[$txtpur\]\u\[$txtrst\]\[$txtylw\]@\[$txtrst\]\[$txtblu\]\h\[$txtrst\]:\[$bldgrn\]\w\[$txtrst\] \[$txtcyn\]$git_branch\[$txtrst\]\[$bldred\]${git_dirty}\[$txtrst\]\n\$ '
