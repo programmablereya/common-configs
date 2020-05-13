@@ -104,4 +104,5 @@ function delete_local_branch() {
   if [[ ! -d "$PWD" ]]; then
     cd ~/equalizer.git
   fi
+  return $lastexit
 }
