@@ -106,13 +106,17 @@ function delete_local_branch() {
   fi
   return $lastexit
 }
+function _list_feature_branches() {
+  git --git-dir ~/equalizer.git for-each-ref --format '%(refname:short)' refs/heads/ \
+    | grep -vF $'develop\ndevelop_front\nmaster' \
+    | sed 's#^feature/##'
+}
 
 function _branch_completions() {
-  COMPREPLY+=($(
-    git --git-dir ~/equalizer.git for-each-ref --format '%(refname:short)' refs/heads/ \
-      | grep -vF $'develop\ndevelop_front\nmaster' \
-      | sed 's#^feature/##'
-  ))
+  if [[ $COMP_CWORD -ne 1 ]];
+    return
+  fi
+  COMPREPLY+=($(compgen -F _list_feature_branches "${COMP_WORDS[1]}"))
 }
 
 complete -F _branch_completions start_branch
