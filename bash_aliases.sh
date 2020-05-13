@@ -127,4 +127,17 @@ ssh_find_agent -a || eval $(ssh-agent) > /dev/null
 
 export GITAWAREPROMPT="$COMMON_CONFIGS_PATH"/git-aware-prompt
 . "$GITAWAREPROMPT"/main.sh
-PS1='\[$bldred\]${debian_chroot:+($debian_chroot)}\[$txtrst\]\[$txtpur\]\u\[$txtrst\]\[$txtylw\]@\[$txtrst\]\[$txtblu\]\h\[$txtrst\]:\[$bldgrn\]\w\[$txtrst\] \[$txtcyn\]$git_branch\[$txtrst\]\[$bldred\]${git_dirty}\[$txtrst\]\n\$ '
+
+function prettylastexit() {
+  local exitcode=$?
+  if [[ -z $exitcode ]]; then
+    echo "[---]\[$txtrst\] "
+  elif [[ $exitcode == 0 ]]; then
+    echo "\[$txtgrn\][ OK]\[$txtrst\] "
+  else
+    printf "\[$txtred\][%3.3s]\[$txtrst\] " "$exitcode"
+  fi
+}
+
+PROMPT_COMMAND="update_lastexit; ${PROMPT_COMMAND}"
+PS1='$(prettylastexit)\[$bldred\]${debian_chroot:+($debian_chroot)}\[$txtrst\]\[$txtpur\]\u\[$txtrst\]\[$txtylw\]@\[$txtrst\]\[$txtblu\]\h\[$txtrst\]:\[$bldgrn\]\w\[$txtrst\] \[$txtcyn\]$git_branch\[$txtrst\]\[$bldred\]${git_dirty}\[$txtrst\]\n\$ '
