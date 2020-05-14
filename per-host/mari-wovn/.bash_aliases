@@ -55,7 +55,7 @@ function get_remote_branch_name() {
 
 function wovn_pull() {
   (
-    cd "~/equalizer.git"
+    cd ~/equalizer.git
     printf "=== Retrieving the latest data from the repository...\n"
     git fetch --all || return "$?"
     git rebase origin/master master || return "$?"
