@@ -18,7 +18,6 @@ function wovn_start() {
   )
 }
 
-
 function _start_branch() {
   branch=${1:?}
   branch=${branch#feature/}
@@ -57,6 +56,7 @@ function get_remote_branch_name() {
 
 function wovn_update() {
   (
+    cd "$(git rev-parse --show-toplevel)"
     # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
@@ -73,26 +73,27 @@ function wovn_update() {
 
 function wovn_install() {
   (
+    cd "$(git rev-parse --show-toplevel)"
     # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
-    if ! bundle check >/dev/null; then
+    if ! bundle check >&/dev/null; then
       printf "=== Installing Ruby dependencies...\n"
       bundle install || exit "$?"
     fi
-    if ! yarn install --offline --check-files --no-progress --ignore-optional --non-interactive --silent 2>/dev/null; then
+    if ! yarn install --offline --check-files --no-progress --ignore-optional --non-interactive --silent >&/dev/null; then
       printf "=== Installing Javascript dependencies in top level...\n"
       yarn install || exit "$?"
     fi
     cd widget || exit "$?"
-    if ! yarn install --offline --check-files --no-progress --ignore-optional --non-interactive --silent 2>/dev/null; then
+    if ! yarn install --offline --check-files --no-progress --ignore-optional --non-interactive --silent >&/dev/null; then
       printf "=== Installing Javascript dependencies in widget...\n"
       yarn install || exit "$?"
       yarn build || exit "$?"
     fi
     cd .. || exit "$?"
     cd front || exit "$?"
-    if ! yarn install --offline --check-files --no-progress --ignore-optional --non-interactive --silent 2>/dev/null; then
+    if ! yarn install --offline --check-files --no-progress --ignore-optional --non-interactive --silent >&/dev/null; then
       printf "=== Installing Javascript dependencies in front...\n"
       yarn install
     fi
