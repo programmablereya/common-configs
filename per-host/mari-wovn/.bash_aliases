@@ -55,12 +55,13 @@ function get_remote_branch_name() {
 
 function wovn_pull() {
   (
-    cd ~/equalizer.git
     printf "=== Retrieving the latest data from the repository...\n"
-    git fetch --all || return "$?"
-    git rebase origin/master master || return "$?"
-    git rebase origin/develop develop || return "$?"
-    git rebase origin/develop_front develop_front || return "$?"
+    cd ~/branches/master || exit "$?"
+    git pull || exit "$?"
+    cd ~/branches/develop || exit "$?"
+    git pull || exit "$?"
+    cd ~/branches/develop_front || exit "$?"
+    git pull || exit "$?"
   )
 }
 
