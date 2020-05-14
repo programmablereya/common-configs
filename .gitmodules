@@ -13,3 +13,6 @@
 [submodule "git-aware-prompt"]
 	path = git-aware-prompt
 	url = https://github.com/jimeh/git-aware-prompt.git
+[submodule "vim/ale"]
+	path = vim/ale
+	url = https://github.com/dense-analysis/ale.git

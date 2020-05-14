@@ -23,6 +23,14 @@ let g:gfm_syntax_emoji_conceal = 0
 filetype plugin indent on
 syntax on
 
+let g:ale_linters = {
+\   'javascript': ['standard'],
+\}
+let g:ale_fixers = {'javascript': ['standard']}
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
+let g:ale_sign_column_always = 1
+
 let g:airline#extensions#tabline#enabled = 1
 set modeline
 set expandtab
