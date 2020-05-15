@@ -30,6 +30,9 @@ let g:ale_fixers = {'javascript': ['standard']}
 let g:ale_lint_on_save = 1
 let g:ale_fix_on_save = 1
 let g:ale_sign_column_always = 1
+let g:airline#extensions#ale#enabled = 1
+hi ALEError ctermbg=DarkRed ctermfg=White
+hi ALEWarning ctermbg=106 ctermfg=Black
 
 let g:airline#extensions#tabline#enabled = 1
 set modeline

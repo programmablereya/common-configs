@@ -14,7 +14,7 @@ function wovn_start() {
     set -o pipefail
     branch=${1:?}
     branch=${branch#feature/}
-    tmux -2 new-window -t "Main Screen" -n "$branch" -c ~/branches -e BRANCH_NAME="$branch" 'bash -ic "_start_branch \"\$BRANCH_NAME\"; exec bash"'
+    tmux -2 new-window -t "Main Screen" -n "$branch" -c ~/equalizer -e BRANCH_NAME="$branch" 'bash -ic "_start_branch \"\$BRANCH_NAME\"; exec bash"'
   )
 }
 
@@ -25,23 +25,23 @@ function _start_branch() {
     # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
-    if [[ ! -d ~/branches/"$branch" ]]; then
+    if [[ ! -d ~/equalizer/"$branch" ]]; then
       printf "=== Setting up a branch named ${branch}...\n"
-      cd ~/equalizer.git || exit "$?"
+      cd ~/equalizer/master || exit "$?"
       wovn_pull
-      printf "=== Checking out the branch named feature/${branch} in a new working tree at ~/branches/${branch}...\n"
-      git worktree add -b "feature/${branch}" ~/branches/"${branch}" develop_front || git worktree add ~/branches/"${branch}" "feature/${branch}" || exit "$?"
+      printf "=== Checking out the branch named feature/${branch} in a new working tree at ~/equalizer/${branch}...\n"
+      git worktree add -b "feature/${branch}" ../"${branch}" develop_front || git worktree add ../"${branch}" "feature/${branch}" || exit "$?"
     else
       printf "=== Accessing an existing branch named ${branch}...\n"
     fi
-    cd ~/branches/"${branch}" || exit "$?"
+    cd ~/equalizer/"${branch}" || exit "$?"
     wovn_update || exit "$?"
     printf "\a=== Your branch ${branch} is ready!\n"
   )
-  if [[ -d ~/branches/"$branch" ]]; then
-    cd ~/branches/"${branch}"
+  if [[ -d ~/equalizer/"$branch" ]]; then
+    cd ~/equalizer/"${branch}"
   else
-    cd ~/equalizer.git
+    cd ~/equalizer/
   fi
 }
 
@@ -56,11 +56,11 @@ function get_remote_branch_name() {
 function wovn_pull() {
   (
     printf "=== Retrieving the latest data from the repository...\n"
-    cd ~/branches/master || exit "$?"
+    cd ~/equalizer/master || exit "$?"
     git pull || exit "$?"
-    cd ~/branches/develop || exit "$?"
+    cd ~/equalizer/develop || exit "$?"
     git pull || exit "$?"
-    cd ~/branches/develop_front || exit "$?"
+    cd ~/equalizer/develop_front || exit "$?"
     git pull || exit "$?"
   )
 }
