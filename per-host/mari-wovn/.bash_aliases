@@ -32,7 +32,7 @@ function _start_branch() {
       if git show-ref --verify --quiet "refs/heads/feature/${branch}"; then
         # Local branch exists, but the directory doesn't
         printf "=== Checking out the local branch named feature/${branch} in a new working tree at ~/equalizer/${branch}...\n"
-      elif git show-ref --verify --quiet "refs/remote/origin/feature/${branch}"; then
+      elif git show-ref --verify --quiet "refs/remotes/origin/feature/${branch}"; then
         # Remote branch exists, but no local branch or directory
         printf "=== Checking out the remote branch named feature/${branch} in a new working tree at ~/equalizer/${branch}...\n"
         git branch --track "feature/${branch}" "origin/feature/${branch}" || exit "$?"
@@ -136,7 +136,7 @@ function wovn_delete() {
     git branch -d "$branch" || exit "$?"
   ); local lastexit="$?"
   if [[ ! -d "$PWD" ]]; then
-    cd ~/equalizer/master
+    cd ~/equalizer
   fi
   return $lastexit
 }
