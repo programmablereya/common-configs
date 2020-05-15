@@ -29,8 +29,20 @@ function _start_branch() {
       printf "=== Setting up a branch named ${branch}...\n"
       cd ~/equalizer/master || exit "$?"
       wovn_pull
-      printf "=== Checking out the branch named feature/${branch} in a new working tree at ~/equalizer/${branch}...\n"
-      git worktree add ../"${branch}" "feature/${branch}" || git worktree add -b "feature/${branch}" ../"${branch}" develop_front || exit "$?"
+      if git show-ref --verify --quiet "refs/heads/feature/${branch}"; then
+        # Local branch exists, but the directory doesn't
+        printf "=== Checking out the local branch named feature/${branch} in a new working tree at ~/equalizer/${branch}...\n"
+      elif git show-ref --verify --quiet "refs/remote/origin/feature/${branch}"; then
+        # Remote branch exists, but no local branch or directory
+        printf "=== Checking out the remote branch named feature/${branch} in a new working tree at ~/equalizer/${branch}...\n"
+        git branch --track "feature/${branch}" "origin/feature/${branch}" || exit "$?"
+      else
+        # Neither local nor remote branch exists, so create one.
+        printf "=== Creating a local and remote branch pair named feature/${branch} and checking it out in a new working tree at ~/equalizer/${branch}...\n"
+        git branch --no-track "feature/${branch}" "origin/develop_front" || exit "$?"
+        git push --set-upstream origin "feature/${branch}"
+      fi
+      git worktree add ../"${branch}" "feature/${branch}" || exit "$?"
     else
       printf "=== Accessing an existing branch named ${branch}...\n"
     fi
