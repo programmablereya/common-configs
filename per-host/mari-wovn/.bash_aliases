@@ -129,7 +129,7 @@ function wovn_delete() {
   return $lastexit
 }
 function _list_feature_branches() {
-  git --git-dir ~/equalizer.git for-each-ref --format '%(refname:short)' refs/heads/ \
+  git --git-dir ~/equalizer/master/.git for-each-ref --format '%(refname:short)' refs/heads/ \
     | grep -vF $'develop\ndevelop_front\nmaster' \
     | sed 's#^feature/##'
 }
