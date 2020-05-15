@@ -30,7 +30,7 @@ function _start_branch() {
       cd ~/equalizer/master || exit "$?"
       wovn_pull
       printf "=== Checking out the branch named feature/${branch} in a new working tree at ~/equalizer/${branch}...\n"
-      git worktree add -b "feature/${branch}" ../"${branch}" develop_front || git worktree add ../"${branch}" "feature/${branch}" || exit "$?"
+      git worktree add ../"${branch}" "feature/${branch}" || git worktree add -b "feature/${branch}" ../"${branch}" develop_front || exit "$?"
     else
       printf "=== Accessing an existing branch named ${branch}...\n"
     fi
@@ -118,13 +118,13 @@ function wovn_delete() {
     set -o pipefail
     branch=${1:+feature/$1}
     branch=${branch:-$(get_current_branch_name)} || exit "$?"
-    cd ~/equalizer.git
+    cd ~/equalizer/master
     worktree="$(git worktree list --porcelain | grep -B2 ${branch} | cut -d' ' -f2 | head -n1)" || exit "$?"
     git worktree remove "$worktree" || exit "$?"
     git branch -d "$branch" || exit "$?"
   ); local lastexit="$?"
   if [[ ! -d "$PWD" ]]; then
-    cd ~/equalizer.git
+    cd ~/equalizer/master
   fi
   return $lastexit
 }
