@@ -85,9 +85,6 @@ function wovn_update() {
     set -o pipefail
     wovn_pull
     printf "=== Updating the branch...\n"
-    if get_remote_branch_name >&/dev/null; then
-      git pull --rebase || exit "$?"
-    fi
     git rebase develop_front || exit "$?"
     printf "=== Checking dependencies...\n"
     wovn_install
