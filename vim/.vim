@@ -1,1 +1,0 @@
-/home/marissa/.common-configs/per-host/mari-wovn/.vim
