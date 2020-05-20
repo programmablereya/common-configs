@@ -50,7 +50,7 @@ function _start_branch() {
       printf "=== Accessing an existing branch named ${branch}...\n"
       cd ~/equalizer/"${branch}" || exit "$?"
       wovn_check_update || printf "=== Some updates are necessary.\n"
-      printf "\a=== Ready to start using branch ${branch}!\n"
+      printf "=== Ready to start using branch ${branch}!\n"
     fi
   )
   if [[ -d ~/equalizer/"$branch" ]]; then
@@ -65,7 +65,7 @@ function get_current_branch_name() {
 }
 
 function get_remote_branch_name() {
-  git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
+  git rev-parse --quiet --abbrev-ref --symbolic-full-name '@{u}'
 }
 
 function wovn_pull() {
@@ -85,7 +85,7 @@ function wovn_check_update() {
     printf "=== Retrieving the latest data from the repository...\n"
     cd "$(git rev-parse --show-toplevel)"
     git fetch --all || exit "$?"
-    git log --graph --oneline --simplify-by-decoration --decorate-refs=refs/{remotes/origin,heads}/{develop{,_front},master,$(get_current_branch_name)} "^$(git merge-base {master,develop{,_front}}^1)" origin/{develop{_front,},master} $(get_current_branch_name) $(get_remote_branch_name)
+    git log --graph --oneline --no-merges --simplify-by-decoration --decorate-refs=refs/{remotes/origin,heads}/{develop{,_front},master,$(get_current_branch_name)} "^$(git merge-base {master,develop{,_front}}^1)" origin/{develop{_front,},master} $(get_current_branch_name) $(get_remote_branch_name)
     { [[ "$(git rev-parse master)" == "$(git rev-parse origin/master)" ]] \
       && [[ "$(git rev-parse develop_front)" == "$(git rev-parse origin/develop_front)" ]] \
       && [[ "$(git rev-parse develop)" == "$(git rev-parse origin/develop)" ]] \
