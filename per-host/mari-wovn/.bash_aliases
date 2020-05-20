@@ -43,12 +43,15 @@ function _start_branch() {
         git push --set-upstream origin "feature/${branch}"
       fi
       git worktree add ../"${branch}" "feature/${branch}" || exit "$?"
+      cd ~/equalizer/"${branch}" || exit "$?"
+      wovn_update || exit "$?"
+      printf "\a=== Your branch ${branch} is ready!\n"
     else
       printf "=== Accessing an existing branch named ${branch}...\n"
+      cd ~/equalizer/"${branch}" || exit "$?"
+      wovn_check_update || printf "=== Some updates are necessary.\n"
+      printf "\a=== Ready to start using branch ${branch}!\n"
     fi
-    cd ~/equalizer/"${branch}" || exit "$?"
-    wovn_update || exit "$?"
-    printf "\a=== Your branch ${branch} is ready!\n"
   )
   if [[ -d ~/equalizer/"$branch" ]]; then
     cd ~/equalizer/"${branch}"
@@ -67,7 +70,7 @@ function get_remote_branch_name() {
 
 function wovn_pull() {
   (
-    printf "=== Retrieving the latest data from the repository...\n"
+    printf "=== Updating local tracking branches...\n"
     cd ~/equalizer/master || exit "$?"
     git pull || exit "$?"
     cd ~/equalizer/develop || exit "$?"
@@ -77,13 +80,26 @@ function wovn_pull() {
   )
 }
 
+function wovn_check_update() {
+  (
+    printf "=== Retrieving the latest data from the repository...\n"
+    cd "$(git rev-parse --show-toplevel)"
+    git fetch --all || exit "$?"
+    git log --graph --oneline --simplify-by-decoration --decorate-refs=refs/{remotes/origin,heads}/{develop{,_front},master,$(get_current_branch_name)} "^$(git merge-base {master,develop{,_front}}^1)" origin/{develop{_front,},master} $(get_current_branch_name) $(get_remote_branch_name)
+    { [[ "$(git rev-parse master)" == "$(git rev-parse origin/master)" ]] \
+      && [[ "$(git rev-parse develop_front)" == "$(git rev-parse origin/develop_front)" ]] \
+      && [[ "$(git rev-parse develop)" == "$(git rev-parse origin/develop)" ]] \
+      && git merge-base --is-ancestor origin/develop_front $(get_current_branch_name); } || exit "$?"
+  )
+}
+
 function wovn_update() {
   (
     cd "$(git rev-parse --show-toplevel)"
     # set -o errexit # Can't do this inside a function
     set -o nounset
     set -o pipefail
-    wovn_pull
+    wovn_check_update || wovn_pull
     printf "=== Updating the branch...\n"
     git rebase develop_front || exit "$?"
     printf "=== Checking dependencies...\n"
