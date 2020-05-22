@@ -41,3 +41,22 @@ set shiftwidth=2
 set softtabstop=2
 set laststatus=2
 hi Statement ctermfg=3 guifg=#C4A000
+
+set synmaxcol=1000
+set foldmethod=syntax
+let javaScript_Fold=1
+set foldcolumn=1
+set foldlevelstart=99
+let g:javascript_conceal_function             = "ƒ"
+let g:javascript_conceal_null                 = "ø"
+let g:javascript_conceal_this                 = "@"
+"let g:javascript_conceal_return               = "⇚"
+let g:javascript_conceal_undefined            = "¿"
+"let g:javascript_conceal_NaN                  = "ℕ"
+let g:javascript_conceal_prototype            = "¶"
+let g:javascript_conceal_static               = "•"
+let g:javascript_conceal_super                = "Ω"
+let g:javascript_conceal_arrow_function       = "⇒"
+let g:javascript_conceal_noarg_arrow_function = "🞅"
+let g:javascript_conceal_underscore_arrow_function = "🞅"
+set conceallevel=1

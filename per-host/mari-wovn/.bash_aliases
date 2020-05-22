@@ -168,3 +168,9 @@ function _branch_completions() {
 
 complete -F _branch_completions wovn_start
 complete -F _branch_completions wovn_delete
+
+function front_tests() {
+  (
+    cd "$(git rev-parse --show-toplevel)/front" && npm run test
+  )
+}
