@@ -28,9 +28,15 @@ fi
 
 function getCurrentGithubId() {
   local RESULT;
-  RESULT=$(ssh -o "IdentitiesOnly=yes" -i ~/.ssh/id_ed25519 -T git@github.com </dev/null 2>&1) 
-  [[ $? -ne 255 ]] || { echo "$RESULT" >&2; exit 1; }
-  USERNAME=$(echo "$RESULT" | sed -n 's/^Hi \([^!]\+\)! You'"'"'ve successfully authenticated, but GitHub does not provide shell access\.$/Successfully authenticated to GitHub as \1/; T; p') || exit 1
+  set +e
+  RESULT=$(ssh -o "IdentitiesOnly=yes" -i ~/.ssh/id_ed25519 -T git@github.com </dev/null 2>&1)
+  if [[ $? -eq 255 ]]; then
+    echo "$RESULT" >&2
+    return 1
+  fi
+  if ! USERNAME=$(echo "$RESULT" | sed -n 's/^Hi \([^!]\+\)! You'"'"'ve successfully authenticated, but GitHub does not provide shell access\.$/\1/; T; p'); then
+    return 1
+  fi
   echo "$USERNAME"
   [[ -n "$USERNAME" ]];
 }
