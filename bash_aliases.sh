@@ -3,12 +3,11 @@
 # link destination: $HOME/.bash_aliases
 
 # Install EDITOR
-export EDITOR='vim -X'
+export EDITOR='nvim'
 
 alias rm="rm -i"
 alias cp="cp -i"
 alias mv="mv -i"
-alias vim="vim -X"
 
 # Send a bell before the prompt if it has been a long time since the last
 # prompt.
