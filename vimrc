@@ -12,6 +12,8 @@ execute pathogen#infect()
 " Set up vim-gfm-syntax
 let g:gfm_syntax_emoji_conceal = 0
 
+let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier']
+
 " Enable file type based indent configuration and syntax highlighting.
 " Note that when code is pasted via the terminal, vim by default does not detect
 " that the code is pasted (as opposed to when using vim's paste mappings), which
@@ -47,16 +49,7 @@ set foldmethod=syntax
 let javaScript_Fold=1
 set foldcolumn=1
 set foldlevelstart=99
-let g:javascript_conceal_function             = "ƒ"
-let g:javascript_conceal_null                 = "ø"
-let g:javascript_conceal_this                 = "@"
-"let g:javascript_conceal_return               = "⇚"
-let g:javascript_conceal_undefined            = "¿"
-"let g:javascript_conceal_NaN                  = "ℕ"
-let g:javascript_conceal_prototype            = "¶"
-let g:javascript_conceal_static               = "•"
-let g:javascript_conceal_super                = "Ω"
-let g:javascript_conceal_arrow_function       = "⇒"
-let g:javascript_conceal_noarg_arrow_function = "🞅"
-let g:javascript_conceal_underscore_arrow_function = "🞅"
-set conceallevel=1
+set conceallevel=0
+
+au BufNewFile,BufRead *.ts setlocal filetype=typescript
+au BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx

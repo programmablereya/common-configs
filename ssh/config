@@ -1,1 +1,5 @@
 AddKeysToAgent yes
+
+Host gubal gubal.reya.zone *.gubal.reya.zone *.gubal
+  Hostname gubal.reya.zone
+  Port 38922
