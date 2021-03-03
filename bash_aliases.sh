@@ -49,6 +49,7 @@ function copy_func()
 
 function sync_git_only()
 {
+  (
     cd "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
     if git add . && ! git diff-index --cached --quiet HEAD; then
       git commit -am "Autocommitted updated scripts from $(hostname)"
