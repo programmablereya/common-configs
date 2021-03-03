@@ -48,14 +48,13 @@ function copy_func()
 }
 
 function sync_git_only()
-{
-  (
     cd "$( dirname "$(realpath -e "${BASH_SOURCE[0]}")" )"
     if git add . && ! git diff-index --cached --quiet HEAD; then
       git commit -am "Autocommitted updated scripts from $(hostname)"
     fi
     git pull --rebase
     git submodule update --init --recursive
+    ./install.sh
     if ! git --no-pager diff --exit-code origin/master master; then
       git --no-pager log --reverse origin/master..master
       if ! read -p "OK to push these changes? (Y/N) " -N 1 confirm; then

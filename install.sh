@@ -27,9 +27,13 @@ if [[ -z "$1" ]]; then
   chmod -R u=rwX,g=,o= "$dir"
   chmod 600 "$dir"/ssh/authorized_keys
 elif [[ "$1" == "link" ]]; then
-  ln --symbolic -T "$hostdir/$relpath" ~/"$relpath"
+  if [[ "$(readlink ~/"$relpath")" != "$hostdir/$relpath" ]]; then
+    ln --symbolic -v -T "$hostdir/$relpath" ~/"$relpath"
+  fi
 elif [[ "$1" == "mkdir" ]]; then
-  mkdir -p ~/"$relpath"
+  if [[ ! -d ~/"$relpath" ]]; then
+    mkdir -vp ~/"$relpath"
+  fi
 else
   echo "unknown command $1"
 fi
